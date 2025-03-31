@@ -1,0 +1,1040 @@
+/program1/src/main/java/com/example/demo/Customer.java
+package com.example.demo;
+public class Customer {
+	private String name;
+	private String address;
+	private Ticket ticket;
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	public Ticket getTicket() {
+		return ticket;
+	}
+	
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
+	}
+	
+	@Override
+	public String toString() {
+		return "Customer [name=" + name + ", address=" + address + ", ticket=" + ticket + "]";
+	}
+	
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program1/src/main/java/com/example/demo/Ticket.java
+package com.example.demo;
+public class Ticket {
+	private int ticketNumber;
+	private int ticketPrice;
+	private int seatNumber;
+	private String ticketType;
+	
+	public int getTicketNumber() {
+		return ticketNumber;
+	}
+	
+	public void setTicketNumber(int ticketNumber) {
+		this.ticketNumber = ticketNumber;
+	}
+	
+	public int getTicketPrice() {
+		return ticketPrice;
+	}
+	
+	public void setTicketPrice(int ticketPrice) {
+		this.ticketPrice = ticketPrice;
+	}
+	
+	public int getSeatNumber() {
+		return seatNumber;
+	}
+	
+	public void setSeatNumber(int seatNumber) {
+		this.seatNumber = seatNumber;
+	}
+	
+	public String getTicketType() {
+		return ticketType;
+	}
+	
+	public void setTicketType(String ticketType) {
+		this.ticketType = ticketType;
+	}
+	
+	@Override
+	public String toString() {
+		return "Ticket [ticketNumber=" + ticketNumber + ", ticketPrice=" + ticketPrice + ", seatNumber=" + seatNumber
+				+ ", ticketType=" + ticketType + "]";
+	}
+	
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program1/src/main/java/com/example/demo/AppConfiguration.java
+package com.example.demo;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+@Configuration
+public class AppConfiguration {
+	
+	@Bean
+	@Scope("prototype")
+	Customer getCustomer() {
+		Customer customer = new Customer();
+		customer.setTicket(getTicket());
+		return customer;
+	}
+
+    @Bean
+    @Scope("singleton")
+    Ticket getTicket() {
+		return new Ticket();
+	}
+	
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program1/src/main/java/com/example/demo/Program1Application.java
+package com.example.demo;
+import java.util.Scanner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+@SpringBootApplication
+public class Program1Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Program1Application.class, args);
+		
+		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfiguration.class);
+		Customer customer = ac.getBean(Customer.class);
+		Ticket ticket = ac.getBean(Ticket.class);
+		
+		Scanner input = new Scanner(System.in);
+		
+		System.out.println("Enter the Customer Details:");
+		System.out.println("Enter the Name: ");
+		customer.setName(input.next());
+		System.out.println("Enter the Address: ");
+		customer.setAddress(input.next());
+		
+		System.out.println("Enter the Ticket Details:");
+		System.out.println("Enter the Ticket Number: ");
+		ticket.setTicketNumber(input.nextInt());
+		System.out.println("Enter the Ticket Price: ");
+		ticket.setTicketPrice(input.nextInt());
+		System.out.println("Enter the Ticket Type: ");
+		ticket.setTicketType(input.next());
+		System.out.println("Enter the Seat Number: ");
+		ticket.setSeatNumber(input.nextInt());
+		
+		System.out.println("Customer Details:");
+		System.out.println("Name: "+customer.getName());
+		System.out.println("Address: "+customer.getAddress());
+		System.out.println("Ticket Details: ");
+		System.out.println("Ticket Number: "+ticket.getTicketNumber());
+		System.out.println("Ticket Price: "+ticket.getTicketPrice());
+		System.out.println("Ticket Type: "+ticket.getTicketType());
+		System.out.println("Seat Number: "+ticket.getSeatNumber());
+		
+		input.close();
+	}
+
+}
+
+
+
+===============================================================================================================================================
+
+
+
+/program2/src/main/java/com/example/demo/College.java
+package com.example.demo;
+public class College {
+	private String name;
+	private String address;
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	@Override
+	public String toString() {
+		return "College [name=" + name + ", address=" + address + "]";
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program2/src/main/java/com/example/demo/Department.java
+package com.example.demo;
+public class Department {
+	private int id;
+	private String name;
+	private String description;
+	private College college;
+	
+	public Department (College college) {
+		this.college = college;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public College getCollege() {
+		return college;
+	}
+
+	public void setCollege(College college) {
+		this.college = college;
+	}
+
+	@Override
+	public String toString() {
+		return "Department [id=" + id + ", name=" + name + ", description=" + description + ", college=" + college
+				+ "]";
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program2/src/main/java/com/example/demo/Program2Application.java
+package com.example.demo;
+import java.util.Scanner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+@SpringBootApplication
+public class Program2Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Program2Application.class, args);
+		ApplicationContext ac = new ClassPathXmlApplicationContext("CollegeDepartment.xml");
+		Department department = (Department) ac.getBean("department");
+		
+		Scanner input = new Scanner(System.in);
+		
+		while(true) {
+			System.out.println("Menu:");
+			System.out.println("1. Insert The Department details");
+			System.out.println("2. Display the Department details with College Details");
+			System.out.println("3. Exit");
+			System.out.println("Enter the choice: ");
+			int choice = input.nextInt();
+			if (choice==1) {
+				System.out.println("Enter the Department ID: ");
+				department.setId(input.nextInt());
+				System.out.println("Enter the Department Name: ");
+				department.setName(input.next());
+				System.out.println("Enter the Department Description: ");
+				department.setDescription(input.next());
+			}
+			else if (choice == 2) {
+				College college = department.getCollege();
+				System.out.println("Department Details:");
+				System.out.println("ID: "+department.getId());
+				System.out.println("Name: "+department.getName());
+				System.out.println("Description: "+department.getDescription());
+				System.out.println("College Details:");
+				System.out.println("Name: "+college.getName());
+				System.out.println("Address: "+college.getAddress());
+			}
+			else if (choice == 3) {
+				System.out.println("Exiting...");
+				break;
+			}
+			else {
+				System.out.println("Invalid Choice, Try Again");
+			}
+		}
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program2/src/main/resources/CollegeDepartment.xml
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="college" class="com.example.demo.College" scope="singleton">
+		<property name="name" value="RVCE" />
+		<property name="address" value="Bangalore" />
+	</bean>
+	<bean id="department" class="com.example.demo.Department" scope="prototype">
+		<constructor-arg name="college" ref="college" />
+	</bean>
+</beans>
+
+
+
+===============================================================================================================================================
+
+
+
+/program3/src/main/java/com/example/demo/Book.java
+package com.example.demo;
+
+public class Book {
+	private int id;
+	private String title;
+	private String author;
+	private String year;
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public String getAuthor() {
+		return author;
+	}
+	
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	
+	public String getYear() {
+		return year;
+	}
+	
+	public void setYear(String year) {
+		this.year = year;
+	}
+	
+	@Override
+	public String toString() {
+		return "Book [id=" + id + ", title=" + title + ", author=" + author + ", year=" + year + "]";
+	}
+}
+
+
+
+===============================================================================================================================================
+
+
+
+/program5/src/main/java/com/example/demo/Product.java	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               /program5/src/main/java/com/example/demo/Product.java
+package com.example.demo;
+import org.hibernate.validator.constraints.Length;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+public class Product {
+	
+	@NotEmpty
+	@Length(max = 255)
+	private String name;
+	
+	@NotNull
+	@Min(value = 1)
+	@Max(value = 100)
+	private int id;
+	
+	@NotNull
+	@Min(value = 0)
+	private double price;
+
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public int getId() {
+		return id;
+	}
+  
+  public void setId(int id) {
+		this.id = id;
+	}
+	
+	public double getPrice() {
+		return price;
+	}
+	
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
+	@Override
+	public String toString() {
+		return "Product [name=" + name + ", id=" + id + ", price=" + price + "]";
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program5/src/main/java/com/example/demo/ProductController.java
+package com.example.demo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/product")
+public class ProductController {
+	
+	List<Product> productList = new ArrayList<Product>();
+	
+	@GetMapping
+	public List<Product> getProduct() {
+		return productList;
+	}
+	
+	@PutMapping
+	public List<Product> putProduct(@RequestBody Product product) {
+		for (Product p: productList) {
+			if(p.getId() == product.getId()) {
+				p.setName(product.getName());
+				p.setPrice(product.getPrice());
+				break;
+			}
+		}
+		return productList;
+	}
+	
+	@PostMapping
+	public ResponseEntity<?> postProduct(@Valid @RequestBody Product product,
+			BindingResult results) {
+		List<String> errors = new ArrayList<String>();
+		if(results.hasErrors()) {
+			for(FieldError error: results.getFieldErrors()) {
+				errors.add(error.getField() + " " + error.getDefaultMessage());
+			}
+			return ResponseEntity.badRequest().body(errors);
+		}
+		else {
+			productList.add(product);
+			return ResponseEntity.ok(productList);
+		}
+	}
+	
+	@DeleteMapping("/{id}")
+	public List<Product> deleteProduct(@PathVariable int id) {
+		for(Product p: productList) {
+			if(id == p.getId()) {
+				productList.remove(p);
+			}
+		}
+		return productList;
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program5/src/main/java/com/example/demo/Program5Application.java
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Program5Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Program5Application.class, args);
+	}
+
+}
+
+
+
+===============================================================================================================================================
+
+
+
+/program6/pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>program6</groupId>
+  <artifactId>program6</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.4.4.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.3.0</version>
+    </dependency>
+  </dependencies>
+</project>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program6/src/main/resources/hibernateConfiguration.cfg.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.password">rvce</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/student</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.pool_size">10</property>
+        <property name="show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
+        <mapping resource="student.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program6/src/main/resources/student.hbm.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="program6.Student.java" table="student">
+        <id name="id" type="int" column="id">
+            <generator class="native" />
+        </id>
+        <property name="totalmarks" column="totalmarks" type="double" />
+        <property name="usn" column="usn" type="string" />
+        <property name="name" column="name" type="string" />
+        <property name="address" column="address" type="string" />
+    </class>
+</hibernate-mapping>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program6/src/main/java/program6/Student.java
+package program6;
+
+public class Student {
+	private int id;
+	private String name;
+	private int age;
+	private String address;
+	private double totalMarks;
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public int getAge() {
+		return age;
+	}
+	
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	public double getTotalMarks() {
+		return totalMarks;
+	}
+	
+	public void setTotalMarks(double totalMarks) {
+		this.totalMarks = totalMarks;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", name=" + name + ", age=" + age + ", address=" + address + ", totalMarks="
+				+ totalMarks + "]";
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program6/src/main/java/program6/HibernateExample.java
+package program6;
+
+import java.util.List;
+import java.util.Scanner;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+
+public class HibernateExample {
+	public Session getSession() {
+		SessionFactory sf = new Configuration().configure("hibernateConfiguration.cfg.xml").buildSessionFactory();
+		Session session = sf.openSession();
+		return session;
+	}
+	
+	public void insert (int id, String name, int age, String address, double totalMarks) {
+		Student student = new Student();
+		student.setId(id);
+		student.setName(name);
+		student.setAge(age);
+		student.setAddress(address);
+		student.setTotalMarks(totalMarks);
+		Session session = getSession();
+		Transaction transaction = session.beginTransaction();
+		session.save(student);
+		transaction.commit();
+		session.close();
+	}
+	
+	public List<Student> display() {
+		Session session = getSession();
+		Query<Student> query = session.createQuery("from Student");
+		List<Student> studentList = query.getResultList();
+		System.out.println(studentList);
+		session.close();
+		return studentList;
+		
+	}
+	
+	public void delete(int id) {
+		Session session = getSession();
+		Query query = session.createQuery("from Student as s where s.id =:id");
+		query.setParameter("id", id);
+		int status = query.executeUpdate();
+		if (status == 0) {
+			System.out.println("Deleted Successfully");
+		}
+		else {
+			System.out.println("Not Deleted");
+		}
+		session.close();
+	}
+	
+	public void search(int id) {
+		Session session = getSession();
+		Query query = session.createQuery("from Student as s where s.id =:id");
+		query.setParameter("id", id);
+		int status = query.executeUpdate();
+		if (status == 0) {
+			System.out.println("Searched Successfully \n"+query.getSingleResult());
+		}
+		else {
+			System.out.println("Not Found");
+		}
+		session.close();
+	}
+	
+	public static void main(String[] args) {
+		HibernateExample hibernateExample = new HibernateExample();
+		
+		Scanner input = new Scanner(System.in);
+		while (true) {
+			System.out.println("1. Insert");
+			System.out.println("2. Delete");
+			System.out.println("3. Search");
+			System.out.println("4. Display");
+			System.out.println("5. Exit");
+			System.out.println("Enter the choice: ");
+			int choice = input.nextInt();
+			switch (choice) {
+			case 1: {
+				System.out.println("Please Enter The Student Details");
+				System.out.println("Enter The ID");
+				int id = input.nextInt();
+				System.out.println("Enter The Name");
+				String name = input.next();
+				System.out.println("Enter The Age");
+				int age = input.nextInt();
+				System.out.println("Enter The Address");
+				String address = input.next();
+				System.out.println("Enter The Total Marks");
+				double totalMarks = input.nextDouble();
+				hibernateExample.insert(id, name, age, address, totalMarks);
+				break;
+			}
+			
+			case 2: {
+				System.out.println("Enter the Student ID to Delete");
+				int id = input.nextInt();
+				hibernateExample.delete(id);
+				break;
+			}
+			
+			case 3: {
+				System.out.println("Enter the Student ID to Search");
+				int id = input.nextInt();
+				hibernateExample.delete(id);
+				break;
+			}
+			
+			case 4: {
+				hibernateExample.display();
+				break;
+			}
+			
+			case 5: {
+				System.out.println("Exited...");
+				break;
+			}
+			
+			default: System.out.println("Invalid Choice, Please Try Again");
+			}
+		}
+	}
+}
+
+Note: Create a sql table
+CREATE TABLE student (
+    id INT PRIMARY KEY,
+    name TEXT,
+    age INT,
+    address TEXT,
+    totalMarks DOUBLE
+);
+
+
+===============================================================================================================================================
+
+/program7/src/main/java/com/example/demo/Student.java
+package com.example.demo;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="student")
+public class Student {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private int id;
+	
+	@Column
+	private String name,usn,address;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsn() {
+		return usn;
+	}
+
+	public void setUsn(String usn) {
+		this.usn = usn;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", name=" + name + ", usn=" + usn + ", address=" + address + "]";
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program7/src/main/java/com/example/demo/StudentRepository.java
+package com.example.demo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface StudentRepository extends JpaRepository<Student,Integer>{
+	
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program7/src/main/java/com/example/demo/StudentService.java
+package com.example.demo;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class StudentService {
+	
+	@Autowired
+	StudentRepository studentRepository;
+	
+	public List<Student> display(){
+		List<Student> studentList = studentRepository.findAll();
+		return studentList;
+	}
+	
+	public String insert (int id, String name, String usn, String address) {
+		int status = 0;
+		Student student = new Student();
+		student.setId(id);
+		student.setName(name);
+		student.setUsn(usn);
+		student.setAddress(address);
+		studentRepository.save(student);
+		return "Inserted into the Table";
+	}
+	
+	public String delete (String usn) {
+		List<Student> studentList = studentRepository.findAll();
+		for (Student student : studentList) {
+			if (student.getUsn().equalsIgnoreCase(usn)) {
+				studentRepository.delete(student);
+				return "Student Deleted";
+			}
+			else {
+				return "Student Not Found";
+			}
+		}
+		return "";
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program7/src/main/java/com/example/demo/Program7Application.java
+package com.example.demo;
+
+import java.util.Scanner;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class Program7Application {
+
+	public static void main(String[] args) {
+		ApplicationContext applicationContext = SpringApplication.run(Program7Application.class, args);
+		StudentService studentService = applicationContext.getBean(StudentService.class);
+		
+		Scanner input = new Scanner (System.in);
+		
+		while(true) {
+			System.out.println("Menu:");
+			System.out.println("1. Add Student");
+			System.out.println("2. View All Students");
+			System.out.println("3. Delete Student");
+			System.out.println("4. Exit");
+			System.out.println("Enter Your Choice: ");
+			
+			int choice = input.nextInt();
+			
+			switch (choice) {
+			case 1 : {
+				System.out.println("Enter Student ID: ");
+				int id = input.nextInt();
+				System.out.println("Enter Student USN: ");
+				String usn = input.next();
+				System.out.println("Enter Student Name: ");
+				String name = input.next();
+				System.out.println("Enter Student Address: ");
+				String address = input.next();
+				studentService.insert(id, name, usn, address);
+				System.out.println("Student added successfully");
+				break;
+			}
+			
+			case 2: {
+				System.out.println("All Students:");
+				studentService.display();
+				break;
+			}
+			
+			case 3: {
+				System.out.println("Enter the Student USN to Delete: ");
+				String usn = input.next();
+				studentService.delete(usn);
+				System.out.println("Student Deleted");
+				break;
+			}
+			
+			case 4: {
+				System.out.println("Exited.");
+				System.exit(0);
+				break;
+			}
+			
+			default : System.out.println("Invalid Input. Please Try Again");
+			
+			}
+		}
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/program7/src/main/resources/application.properties
+spring.application.name=program7
+spring.datasource.url=jdbc:mysql://localhost:3306/student
+spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
+spring.datasource.username=root
+spring.datasource.password=rvce
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+
+
+===============================================================================================================================================
+
+/program9/Dockerfile
+FROM openjdk:17-alpine
+WORKDIR /opt
+COPY /target/*.jar /opt/app.jar
+ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
+
+
+/program9/docker-compose.yml
+
+version: "3.8"
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: student
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    networks:
+      - default
+
+  app:
+    image: myorg/myapp:latest
+    tty: "true"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/student
+      SPRING_DATASOURCE_DRIVERCLASSNAME: com.mysql.cj.jdbc.Driver
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - db
+    networks:
+      - default
